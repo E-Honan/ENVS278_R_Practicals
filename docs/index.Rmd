@@ -19,6 +19,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![Status](https://img.shields.io/badge/status-work%20in%20progress-yellow) **This practical is under development.**
 
+Built with `r getRversion()` 
+
 ```{r, echo = F}
 knitr::include_graphics("photos/ENVS278_Fieldtrip_behav_egs.png")
 ```
@@ -43,6 +45,12 @@ Over the course of the next 2 weeks, we will work with this data to...
 6.  Produce a map of the study area and export it for use in your report
 
 ::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
+## How to follow this practical guide
+:::
+
+This webpage will guide you fully through analysing and visualising your own field data, which we collected in groups at Blakemere Moss.
+
+::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
 ## R & RStudio
 :::
 
@@ -60,9 +68,9 @@ Check version.
 
 **If you are not working on a university computer:**
 
-To get started, first download **R** from the [[**Comprehensive R Archive Network**]{.underline} **(CRAN)**,](https://cran.r-project.org/bin/windows/base/) which provides the core programming language and statistical environment.
+- To get started, first download **R** from the [[**Comprehensive R Archive Network**]{.underline} **(CRAN)**,](https://cran.r-project.org/bin/windows/base/) which provides the core programming language and statistical environment.
 
-After installing R, [download **RStudio** from **Posit**.](https://posit.co/downloads/) RStudio is an integrated development environment (IDE) that makes it easier to write code, manage projects, visualize data, and install packages.
+- After installing R, [download **RStudio** from **Posit**.](https://posit.co/downloads/) RStudio is an integrated development environment (IDE) that makes it easier to write code, manage projects, visualize data, and install packages.
 
 Together, R and RStudio provide a powerful platform for analysing environmental and spatial datasets used in GIS and environmental science.
 
@@ -70,21 +78,15 @@ Together, R and RStudio provide a powerful platform for analysing environmental 
 ## Learning R
 :::
 
-[R for Data Science](https://r4ds.hadley.nz/) is a free online resource and
+::: {style="background-color: #FFFF08; padding: 10px; border-left: 5px solid #FFFF08;"}
+**TASK:** Please read the (short) introductory chapter of [R for Data Science](https://r4ds.hadley.nz/) - this should only take 5 - 10 minutes and will provide you with a good foundation for the rest of the practical. 
+:::
 
-TASK: Please read the introduction of
-
-There are some excellent tutorials available on Youtube, and I've listed a few of my favourites below:
+There are also some excellent tutorials available on Youtube, and I've listed a few of my favourites below:
 
 Specifically for spatial data, I also have a webpage where I collate useful resources (those of you on ENVS255 will be familiar with it):
 
 -   <https://e-honan.github.io/GIS-Resources/> *(this webpage is currently under development and will be updated regularly!)*
-
-::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
-## How to follow this practical guide
-:::
-
-This webpage will guide you fully through analysing and visualising your own field data, which we collected in groups at Blakemere Moss.
 
 ------------------------------------------------------------------------
 
@@ -104,19 +106,79 @@ Picture of labelled console etc
 
 ## Working with projects in R
 
+- File > New Project…
+- Select ‘New Directory’
+- For the Project Type select ‘New Project’
+- For Directory name, call it something like “ENVS278_Gull_Practicals” (without the quotes!)
+- For the sub-directory, select somewhere you will remember (like “My Documents” or “Desktop”)
+
 ## Data hygiene
 
 Hierarchical file systems
 
-Annotating your code
+## Opening your first R script
+
+An R script is a plain text file that contains a series of R commands you can run. An R script is saved with the extension '.R'. 
+
+To create a new script. 
+
+Press save, and give the script a sensible title, like "ENVS278_Gulls_Prac_1". Save it to the 'code' folder in your R project folder. 
+
+Add a title to your script with a brief description of what it contains. Use hashtags to tell R that the title is **not** code. 
 
 ```{r}
-# you can use hashtags to tell R that a line is not a piece of code, and use them to add notes to your R script
+# You can use hashtags to tell R that a line is not a piece of code, and use them to add notes to your R script
 ```
 
-## Your toolbox: Loading R Packages
+Example title: 
+```{r}
+# ENVS278 Practical 1
+# Black-headed Gull Behaviour
+# yy/mm/dd
+
+```
+
+
+## Your toolbox: Loading R packages
 
 discuss Install vs library
+
+- A package bundles together code, data, documentation, and tests, and is easy to share with others [(Wickham & Bryan)](https://r-pkgs.org/)
+
+You install R packages using the syntax: `install.packages("package_name")`
+
+```{r, eval = F}
+# install the package
+install.packages("tidyverse")
+```
+
+If you want to install several packages at once, you can do so using the following syntax: 
+
+```{r, eval = F, warning = F, message = F}
+# install the packages 'cowplot' and 'ggpubr'
+install.packages(c("cowplot", "ggpubr"))
+```
+
+Once installed (which you should only have to do once), you can start your R session by loading the package into your library for that session. Note that when installing a package you use "" around 
+the package name, but not when loading it to your library.
+
+You load the installed R packages to your library using the syntax: `library(package_name)`
+
+```{r, eval = T, warning = F, message = F}
+# load the package 'tidyverse' into your library
+library(tidyverse)
+```
+
+The syntax for loading multiple libraries is not the same as installing multiple packages. If you're comfortable with R, and would like to try loading multiple libraries at once, the code for this is in the [Optional Extras](#optional-extras) section at the end of this webpage. 
+
+If you're getting started with R, the simplest way to load multiple packages is just to manually list them: 
+
+```{r, eval = F}
+# load ggpubr and cowplot to your library
+library(ggpubr)
+library(cowplot)
+```
+
 
 ::: {style="background-color: #CAB3E8; padding: 10px; border-left: 5px solid #3399ff;"}
 **NOTE:** You should only need to install a package once, but you will have to add it to the library for each R session.
@@ -126,6 +188,14 @@ discuss Install vs library
 
 ## Viewing your data
 
+
+Using pipes: 
+In the code above, we chain together multiple commands with the pipe operator (%>%). When you see the pipe, you can interpret this as the words “and then”. If we wrote this as pseudocode, it would read:
+
+tucson_major <- get the bounding box for Tucson *and then*
+  prepare an OSM query *and then*
+  specify the types of highways to include *and then*
+  convert the data to sf format
 ------------------------------------------------------------------------
 
 # Preliminary analyses
@@ -137,6 +207,12 @@ discuss Install vs library
 > [!IMPORTANT]\
 > Keep it accesibile.
 
+`ggplot2` is the best package for plotting data in R, offering a plethora of options for customization. There are many tutorials out there, but I've found the best way of thinking of any ggplot plot is the 'layer cake' analogy: 
+
+```{r, eval = F}
+install.packages("ggplot2")
+```
+
 ------------------------------------------------------------------------
 
 # Cohen's Kappa
@@ -145,13 +221,24 @@ discuss Install vs library
 
 # Making a map of your study area
 
-In previous modules you may have used the software QGIS to produce maps visualizing animal movement data. A good map is an important component of most scientific reports. However, you can also use R to create publication quality maps!
+A good map is an important component of most scientific reports. In previous modules you may have used the software QGIS to produce maps visualizing animal movement data. However, you can also use R to create publication quality maps!
 
-In this next section, we're going to walk through how to generate a basic map in R, and you will be introduced to some useful packages for sourcing base-maps and working with spatial data in R.
+In this next section, we're going to walk through how to generate a basic map in R, and you will be introduced to some useful repositories for sourcing base-maps and working with spatial data in R.
+
+Make a new R script and call it something sensible. Save it to your "code" folder in your project repository.
+
+```{r}
+# ENVS278 Practical 1
+# Map of study area
+# yy/mm/dd
+
+```
+
+## Setting up your script
 
 ### Packages for spatial data
 
-[sf](https://r-spatial.github.io/sf/) (standing for "simple features" is the workhorse package of handling spatial data in R.
+[sf](https://r-spatial.github.io/sf/) (standing for "simple features") is the workhorse package of handling spatial data in R.
 
 ```{r, eval = F}
 # install the package
@@ -163,7 +250,19 @@ install.packages("sf")
 library(sf)
 ```
 
-When beginning to create maps in R, the package [rnaturalearth](https://docs.ropensci.org/rnaturalearth/articles/rnaturalearth.html) is an excellent starting point. [Natural Earth](https://www.naturalearthdata.com/) is a public domain map dataset including vector country and other administrative boundaries.
+For working with rasters in R, [terra](https://rspatial.github.io/terra/index.html) is a great package to start with. 
+
+```{r, eval = F}
+# install the package
+install.packages("terra")
+```
+
+```{r, eval = T, warning = F, message = F}
+# load the package into your library
+library(terra)
+```
+
+When beginning to create maps in R, the package [rnaturalearth](https://docs.ropensci.org/rnaturalearth/articles/rnaturalearth.html) is a good resource. [Natural Earth](https://www.naturalearthdata.com/) is a public domain map dataset including vector country and other administrative boundaries.
 
 ```{r, eval = F}
 # install the package
@@ -175,6 +274,93 @@ install.packages("rnaturalearth")
 library(rnaturalearth)
 ```
 
+However, for the spatial scale of map we're making, we may need higher resolution data than available on `rnaturalearth`. 
+
+
+### Downloading high resolution imagery of the fieldsite 
+
+Before we begin to produce the map in R, we need to source a good basemap. There are several packages ... high res so easier to load in...
+
+- Log into the [EDINA Digimap](https://digimap.edina.ac.uk/) service (you should have already registered; if not, do so
+now)
+- Search “University of Liverpool” as the organisation you would like to sign in with
+- Sign in with your usual University log in
+- Press Licence Agreements (Top of screen) and select all
+- Accept terms and conditions (for all)
+- Purpose -> Academic Works (for all)
+- Next -> Submit -> Continue
+- This now gives you access to base maps from both of these collections
+- Now return to the Digimap homepage
+
+In previous practicals you may have used topographic information... 
+
+For the purpose of visualisation, we're going to use high resolution aerial imagery. 
+
+- On the Digimap home page, click "Aerial"
+- Click "Aerial Digimap" above "View Maps and dDwnload Data - View, annotate and print maps, plus download data for GIS/CAD."
+- Zoom to Blakemere Moss
+
+```{r, echo = F}
+knitr::include_graphics("photos/digimap_aerial_overview.png")
+```
+
+
+- Click "Download Data" and "Select visible area". This will select the area you have zoomed to. 
+- Under "Select Data Products" select the box for "High Resolution (25cm)"
+
+You'll notice it may say "(2/98) tiles", where 4 could be any number. We'll get to that shortly.
+
+- Click "Add to Basket"
+- Press download. It may take a few moments for your files to arrive in your inbox. 
+
+Your files will arrive as a .zip file. Extract them into the 'aerial_maps' folder in your R project directory.
+
+### Load in your station locations 
+
+Now we'll read in the csv of station locations so that we can visualise them. 
+
+```{r, eval = F}
+station_locs <- read.csv("")
+```
+
+Check the file structure:
+
+```{r, eval = F}
+
+```
+
+## Making your map 
+
+You'll notice the aerial images downloads as multiple files. We need to merge these before visualising in R. We also need to apply a CRS. We're using EPSG:27700. 
+
+
+Applying a crs: 
+```{r, eval = F}
+# Assign CRS manually
+rasters <- lapply(rasters, function(x) {
+  crs(x) <- "EPSG:27700"
+  x
+})
+```
+
+Merging the rasters: 
+```{r, eval = F}
+merged <- do.call(mosaic, rasters)
+```
+
+```{r, eval = F}
+plotRGB(merged)
+```
+
+### Output your map as a high-resolution .png
+
+For use in your report 
+
+```{r, eval = F}
+
+```
+
+
 ::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
 # Optional Extras
 :::
@@ -183,3 +369,31 @@ library(rnaturalearth)
 ## Jazzing up your plots!
 :::
 
+### Adding icons to plots
+
+[rphylopic](https://cran.r-project.org/web/packages/rphylopic/readme/README.html) is an r package which allows users to add silhouettes of organisms to plots generated in base R and ggplot2. The silhouettes are sourced from the [PhyloPic website.](https://www.phylopic.org/)
+
+Here is a useful outline of the code: [How to add a Phylopic icon to your graph in R](https://jacintak.github.io/post/2021-08-01-rphylopic/).
+
+They have some generic gull silhouettes but they're mostly from the genus Larus - they have one [*Chroicocephalus ridibundus!*](https://www.phylopic.org/nodes/57bc51e5-98e0-4a55-8e60-6faf6fc8226b/chroicocephalus-ridibundus-silhouettes)
+
+::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
+## Tips and tricks
+:::
+
+### Loading multiple packages to your library
+
+To load multiple libraries in one go, rather than listing them all out, you can use the `lapply()` function in base R. 
+
+```{r, eval = F}
+# Define a vector of packages to load
+some_packages <- c('ggplot2', 'dplyr', 'ggpubr')
+
+# Use lapply to load all packages to your library at once
+lapply(some_packages, library, character.only=TRUE)
+
+```
+
+::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
+# Practical end. Well done!
+:::
