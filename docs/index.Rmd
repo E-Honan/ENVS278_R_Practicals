@@ -1,28 +1,116 @@
 ---
 title: "ENVS278: Marine Ecology Field Studies"
 author: "Ellie Honan"
-subtitle: "Analysing and visualising animal behaviour data in RStudio"
+subtitle: "Analysing and visualising animal behavioural data in RStudio"
 date: "2026-03-24"
-  output:
+output:
   html_document: 
     toc: true
     toc_float: true
     number_sections: true
-    theme: cosmo
+    theme: flatly
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+------------------------------------------------------------------------
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r, echo = F}
+knitr::include_graphics("photos/ENVS278_Fieldtrip_behav_egs.png")
+```
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Introduction
 
-```{r cars}
-summary(cars)
+text here
+
+## Learning R
+
+There are some excellent tutorials available on Youtube, and I've listed a few of my favourites below: 
+
+Specifically for spatial data, I also have a webpage where I collate useful resources (those of you on ENVS255 will be familiar with it): 
+
+## R & RStudio
+
+The aim of these practical sessions
+
+## How to follow this practical guide
+
+This webpage will guide you fully through analysing and visualising your own field data, which we collected in groups at Blakemere Moss.
+
+# Formatting your data from the field
+
+***30 - 40 minutes***
+
+# Setting up your workspace
+
+## The RStudio environment
+
+Picture of labelled console etc
+
+## Working with projects in R
+
+## Data hygiene
+
+Hierarchical file systems
+
+Annotating your code
+
+```{r}
+# you can use hashtags to tell R that a line is not a piece of code, and use them to add notes to your R script
+```
+
+## Your toolbox: Loading R Packages
+
+Install vs library
+
+> [!NOTE]
+You should only need to install a package once, but you will have to add it to the library for each R session.
+
+## Formatting your data and loading your data to R
+
+# Data exploration in R
+
+## Viewing your data
+
+## Data visualisation
+
+> [!IMPORTANT]  
+> Keep it accesibile. 
+
+## Cohen's Kappa
+
+## Making a map of your study area
+
+In previous modules you may have used the software QGIS to produce maps visualizing animal movement data. A good map is an important component of most scientific reports. However, you can also use R to create publication quality maps!
+
+In this next section, we're going to walk through how to generate a basic map in R, and you will be introduced to some useful packages for sourcing base-maps and working with spatial data in R.
+
+### Packages for spatial data
+
+[sf](https://r-spatial.github.io/sf/) (standing for "simple features" is the workhorse package of handling spatial data in R.
+
+```{r, eval = F}
+# install the package
+install.packages("sf")
+```
+
+```{r, eval = T, warning = F, message = F}
+# load the package into your library
+library(sf)
+```
+
+When beginning to create maps in R, the package [rnaturalearth](https://docs.ropensci.org/rnaturalearth/articles/rnaturalearth.html) is an excellent starting point. [Natural Earth](https://www.naturalearthdata.com/) is a public domain map dataset including vector country and other administrative boundaries.
+
+```{r, eval = F}
+# install the package
+install.packages("rnaturalearth")
+```
+
+```{r, eval = T, warning = F}
+# load the package into your library
+library(rnaturalearth)
 ```
 
 ## Including Plots
