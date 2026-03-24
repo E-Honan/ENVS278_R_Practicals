@@ -17,31 +17,84 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ------------------------------------------------------------------------
 
+![Status](https://img.shields.io/badge/status-work%20in%20progress-yellow) **This practical is under development.**
+
 ```{r, echo = F}
 knitr::include_graphics("photos/ENVS278_Fieldtrip_behav_egs.png")
 ```
 
+::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
 # Introduction
+:::
 
-text here
+**Welcome** to the practical classes of ENVS278: Marine Ecology Field Studies! For those of you I haven't met, my name is Ellie and I am a university teacher in marine biology and ecology here in the School of Earth and Environmental Sciences at Liverpool. My [own research](https://link.springer.com/article/10.1007/s00227-025-04657-w) looks at how an **Antarctic seabird**, the snow petrel, uses sea ice habitats. For this, I use a combination of biotelemetry (through GPS tracking) and biogeochemistry (for investigating their diet). In general, my interests are in ***what drives how animals interact with their environment.***
 
-## Learning R
+At Blakemere Moss, you collected...
 
-There are some excellent tutorials available on Youtube, and I've listed a few of my favourites below: 
+Over the course of the next 2 weeks, we will work with this data to...
 
-Specifically for spatial data, I also have a webpage where I collate useful resources (those of you on ENVS255 will be familiar with it): 
+**Learning Outcomes**
 
+1.  Collate and format the data you collected into the field into a format suitable for analyses in R
+2.  Learn how to create a project in R
+3.  Learn how to load your data into R and conduct preliminary analyses
+4.  (add detail on actual analyses)
+5.  (add detail on actual analyses)
+6.  Produce a map of the study area and export it for use in your report
+
+::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
 ## R & RStudio
+:::
 
-The aim of these practical sessions
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("photos/R-and-Rstudio.png")
+```
 
+One of the aims of these practical sessions is to familiarise you...
+
+R and RStudio are some of the most frequently used softwares in ecology. They are free, open-source tools widely used for data analysis, statistics, and geospatial work.
+
+**If you are working on a university computer:**
+
+Check version.
+
+**If you are not working on a university computer:**
+
+To get started, first download **R** from the [[**Comprehensive R Archive Network**]{.underline} **(CRAN)**,](https://cran.r-project.org/bin/windows/base/) which provides the core programming language and statistical environment.
+
+After installing R, [download **RStudio** from **Posit**.](https://posit.co/downloads/) RStudio is an integrated development environment (IDE) that makes it easier to write code, manage projects, visualize data, and install packages.
+
+Together, R and RStudio provide a powerful platform for analysing environmental and spatial datasets used in GIS and environmental science.
+
+::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
+## Learning R
+:::
+
+[R for Data Science](https://r4ds.hadley.nz/) is a free online resource and
+
+TASK: Please read the introduction of
+
+There are some excellent tutorials available on Youtube, and I've listed a few of my favourites below:
+
+Specifically for spatial data, I also have a webpage where I collate useful resources (those of you on ENVS255 will be familiar with it):
+
+-   <https://e-honan.github.io/GIS-Resources/> *(this webpage is currently under development and will be updated regularly!)*
+
+::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
 ## How to follow this practical guide
+:::
 
 This webpage will guide you fully through analysing and visualising your own field data, which we collected in groups at Blakemere Moss.
 
+------------------------------------------------------------------------
+
+::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
 # Formatting your data from the field
+:::
 
 ***30 - 40 minutes***
+
+------------------------------------------------------------------------
 
 # Setting up your workspace
 
@@ -63,25 +116,34 @@ Annotating your code
 
 ## Your toolbox: Loading R Packages
 
-Install vs library
+discuss Install vs library
 
-> [!NOTE]
-You should only need to install a package once, but you will have to add it to the library for each R session.
+::: {style="background-color: #CAB3E8; padding: 10px; border-left: 5px solid #3399ff;"}
+**NOTE:** You should only need to install a package once, but you will have to add it to the library for each R session.
+:::
 
 ## Formatting your data and loading your data to R
 
-# Data exploration in R
-
 ## Viewing your data
 
-## Data visualisation
+------------------------------------------------------------------------
 
-> [!IMPORTANT]  
-> Keep it accesibile. 
+# Preliminary analyses
 
-## Cohen's Kappa
+------------------------------------------------------------------------
 
-## Making a map of your study area
+# Data visualisation in R
+
+> [!IMPORTANT]\
+> Keep it accesibile.
+
+------------------------------------------------------------------------
+
+# Cohen's Kappa
+
+------------------------------------------------------------------------
+
+# Making a map of your study area
 
 In previous modules you may have used the software QGIS to produce maps visualizing animal movement data. A good map is an important component of most scientific reports. However, you can also use R to create publication quality maps!
 
@@ -113,12 +175,11 @@ install.packages("rnaturalearth")
 library(rnaturalearth)
 ```
 
-## Including Plots
+::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
+# Optional Extras
+:::
 
-You can also embed plots, for example:
+::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
+## Jazzing up your plots!
+:::
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
