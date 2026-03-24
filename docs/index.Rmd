@@ -1,6 +1,7 @@
 ---
-title: "ENVS278"
+title: "ENVS278: Marine Ecology Field Studies"
 author: "Ellie Honan"
+subtitle: "Analysing and visualising animal behaviour data in RStudio"
 date: "2026-03-24"
 output: html_document
 ---
