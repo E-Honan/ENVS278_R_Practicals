@@ -33,9 +33,7 @@ knitr::include_graphics("photos/ENVS278_Fieldtrip_behav_egs.png")
 
 At Blakemere Moss, you collected...
 
-Over the course of the next 2 weeks, we will work with this data to...
-
-**Learning Outcomes**
+Two four-hour computer practicals. From these sessions, you will achieve the following **Learning Outcomes:**
 
 1.  Collate and format the data you collected into the field into a format suitable for analyses in R
 2.  Learn how to create a project in R
@@ -43,6 +41,9 @@ Over the course of the next 2 weeks, we will work with this data to...
 4.  (add detail on actual analyses)
 5.  (add detail on actual analyses)
 6.  Produce a map of the study area and export it for use in your report
+
+
+(bit about data being used in report)
 
 ::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
 ## How to follow this practical guide
@@ -515,13 +516,37 @@ ggplot(df) +
 
 
 
-### Add your stations
-
-Plot as points
-
 ### Annotate your map
 
 Maps need context! Add a scale bar and north arrow at a minumum.
+
+We'll use the package `ggspatial` to add these. 
+
+```{r, eval = F}
+install.packages("ggspatial")
+```
+
+```{r, message= F, warning = F}
+library(ggspatial)
+```
+
+
+```{r}
+
+map_arrow <- ggplot(df) +
+  geom_raster(aes(x = x, y = y,
+                  fill = rgb(sj5470_rgb_250_04_1, sj5470_rgb_250_04_2, sj5470_rgb_250_04_3, maxColorValue = 255))) +
+      annotation_scale(location = "bl", width_hint = 0.5) +
+  annotation_north_arrow(location = "bl", which_north = "true", 
+        pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
+        style = north_arrow_fancy_orienteering) +
+  scale_fill_identity() +
+  geom_sf(data = stations_sf, colour = "red", size = 3) +
+  theme_minimal()
+map_arrow
+
+```
+
 
 ### Add a map overview using `rnaturalearth`
 
