@@ -518,9 +518,13 @@ ggplot(df) +
 
 ### Annotate your map
 
+This section is way too heavy rendering so make them pictures and load them seperately 
+
 Maps need context! Add a scale bar and north arrow at a minumum.
 
 We'll use the package `ggspatial` to add these. 
+
+Probably take out the north arrow...
 
 ```{r, eval = F}
 install.packages("ggspatial")
