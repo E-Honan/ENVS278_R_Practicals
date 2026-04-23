@@ -33,7 +33,7 @@ knitr::include_graphics("photos/ENVS278_Fieldtrip_behav_egs.png")
 
 At Blakemere Moss, you collected...
 
-Two four-hour computer practicals. From these sessions, you will achieve the following **Learning Outcomes:**
+We will have two four-hour computer practicals. From these sessions, you will achieve the following **Learning Outcomes:**
 
 1.  Collate and format the data you collected into the field into a format suitable for analyses in R
 2.  Learn how to create a project in R
@@ -43,7 +43,7 @@ Two four-hour computer practicals. From these sessions, you will achieve the fol
 6.  Produce a map of the study area and export it for use in your report
 
 
-(bit about data being used in report)
+ADD REPORT DETAILS
 
 ::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
 ## How to follow this practical guide
@@ -97,7 +97,8 @@ Specifically for spatial data, I also have a webpage where I collate useful reso
 # Formatting your data from the field
 :::
 
-***30 - 40 minutes***
+For the first section of today's practical, you will be formatting your data from the field. On the Canvas, you will find templates for each of your groups to input your data. 
+
 
 ------------------------------------------------------------------------
 
@@ -144,8 +145,6 @@ Example title:
 
 ## Your toolbox: Loading R packages
 
-discuss Install vs library
-
 -   A package bundles together code, data, documentation, and tests, and is easy to share with others [(Wickham & Bryan)](https://r-pkgs.org/)
 
 You install R packages using the syntax: `install.packages("package_name")`
@@ -185,8 +184,6 @@ library(cowplot)
 **NOTE:** You should only need to install a package once, but you will have to add it to the library for each R session.
 :::
 
-## Formatting your data and loading your data to R
-
 ## Viewing your data
 
 Using pipes: In the code above, we chain together multiple commands with the pipe operator (%\>%). When you see the pipe, you can interpret this as the words “and then”. If we wrote this as pseudocode, it would read:
@@ -197,7 +194,7 @@ Using pipes: In the code above, we chain together multiple commands with the pip
 
 ## Observer Bias: Cohen's Kappa
 
--   Need to check reliability of data
+-   Need to check **reliability** of data
 
 -   Having multiple observers in the same project introduces bias
 
@@ -214,6 +211,39 @@ Using pipes: In the code above, we chain together multiple commands with the pip
 -   0.8 is generally considered an acceptable score
 
 Before moving onto the next session, make sure all the dyads within your data collection group have achieved a Cohen's kappa coefficient of \>0.8
+
+Load the package for calculating Cohen's kappa: 
+
+```{r, eval = F, warning = F, message = F}
+# install package
+install.packages("psych")
+```
+
+Open it in your library: 
+
+```{r, eval = T, warning = F, message = F}
+# load package
+library(psych)
+```
+
+Then load in your data set for comparison: 
+
+```{r}
+# open the csv file with your own data (you will need to modify the name of the csv file below)
+Kappa_data <- read.csv("intereliability_data/Kappa Example Dataset.csv")
+
+# check that the data set is properly loaded and looks fine
+View(Kappa_data)
+
+#calculate Cohen's Kappa
+cohen.kappa(Kappa_data) # in the output you are interested in the unweighted kappa row, and the estimate column
+
+```
+
+Is the score > 0.8?
+
+Repeat this for every dyad in your group. 
+
 
 ------------------------------------------------------------------------
 
@@ -235,368 +265,37 @@ library(ggplot2)
 
 ## Visualing count data
 
-Change through time in attendance etc - (plot, annotate, explain)
+The last task in today's practical is to visualise your count data. There are many ways to visualise data through time, and here I've demonstrated one.
 
-# PRACTICAL SESSION 2
-
-# Time-budgets
-
--   Visualising the behavioural data:
--   Time budget (time in state, box plots/ violins/ distributions)
--   Multiple visualisation techniques – start with pie chart (highlight no visualisation of variance)
--   The box plot
--   Time budget (time in state, box plots/ violins/ distributions)
--   Try visualise the offset violin thing Jon sketched
--   Interaction data?
-
-# Making a map of your study area
-
-A good map is an important component of most scientific reports. In previous modules you may have used the software QGIS to produce maps visualizing animal movement data. However, you can also use R to create publication quality maps!
-
-In this next section, we're going to walk through how to generate a basic map in R, and you will be introduced to some useful repositories for sourcing base-maps and working with spatial data in R.
-
-Make a new R script and call it something sensible. Save it to your "code" folder in your project repository.
+Load in your count data: 
 
 ```{r}
-# ENVS278 Practical 1
-# Map of study area
-# yy/mm/dd
-
+counts <- read.csv("count_data/count_summary.csv")
 ```
 
-## Setting up your script
-
-### Packages for spatial data
-
-[sf](https://r-spatial.github.io/sf/) (standing for "simple features") is the workhorse package of handling spatial data in R.
-
-```{r, eval = F}
-# install the package
-install.packages("sf")
-```
-
-```{r, eval = T, warning = F, message = F}
-# load the package into your library
-library(sf)
-```
-
-For working with rasters in R, [terra](https://rspatial.github.io/terra/index.html) is a great package to start with.
-
-```{r, eval = F}
-# install the package
-install.packages("terra")
-```
-
-```{r, eval = T, warning = F, message = F}
-# load the package into your library
-library(terra)
-```
-
-When beginning to create maps in R, the package [rnaturalearth](https://docs.ropensci.org/rnaturalearth/articles/rnaturalearth.html) is a good resource. [Natural Earth](https://www.naturalearthdata.com/) is a public domain map dataset including vector country and other administrative boundaries.
-
-```{r, eval = F}
-# install the package
-install.packages("rnaturalearth")
-```
-
-```{r, eval = T, warning = F}
-# load the package into your library
-library(rnaturalearth)
-```
-
-However, for the spatial scale of map we're making, we may need higher resolution data than available on `rnaturalearth`.
-
-### Downloading high resolution imagery of the fieldsite
-
-Before we begin to produce the map in R, we need to source a good basemap. There are several packages ... high res so easier to load in...
-
--   Log into the [EDINA Digimap](https://digimap.edina.ac.uk/) service (you should have already registered; if not, do so now)
--   Search “University of Liverpool” as the organisation you would like to sign in with
--   Sign in with your usual University log in
--   Press Licence Agreements (Top of screen) and select all
--   Accept terms and conditions (for all)
--   Purpose -\> Academic Works (for all)
--   Next -\> Submit -\> Continue
--   This now gives you access to base maps from both of these collections
--   Now return to the Digimap homepage
-
-In previous practicals you may have used topographic information...
-
-For the purpose of visualisation, we're going to use high resolution aerial imagery.
-
--   On the Digimap home page, click "Aerial"
--   Click "Aerial Digimap" above "View Maps and dDwnload Data - View, annotate and print maps, plus download data for GIS/CAD."
--   Zoom to Blakemere Moss
-
-```{r, echo = F}
-knitr::include_graphics("photos/digimap_aerial_overview.png")
-```
-
--   Click "Download Data" and "Select visible area". This will select the area you have zoomed to.
--   Under "Select Data Products" select the box for "High Resolution (25cm)"
-
-You'll notice it may say "(2/98) tiles", where 4 could be any number. We'll get to that shortly.
-
--   Click "Add to Basket"
--   Press download. It may take a few moments for your files to arrive in your inbox.
-
-Your files will arrive as a .zip file. Extract them into the 'aerial_maps' folder in your R project directory.
-
-### Load in your station locations
-
-Now we'll read in the csv of station locations so that we can visualise them.
-
-```{r, eval = T}
-station_locs <- read.csv("map_data/ENVS278_Blakemere_Moss_locs.csv")
-```
-
-Check the file structure:
-
-```{r, eval = T}
-head(station_locs)
-```
-
-## Making your map
-
-You'll notice the aerial images downloads as multiple files. We need to merge these into one composite map. 
-
-### Load our aerial images into R and convert to rasters: 
-
-```{r, eval = T}
-# First we define the folder path. The trailing / just indicates it's a folder.
-
-folder <- "C:/Users/ehonan/Downloads/Download_aerial_image_2953620/getmapping-rgb-25cm-2023_6348331/sj/"
-
-# Then get a list of all .jpg files in that folder. Because we state 'full.names = TRUE' we get full file paths, not just filenames.
-files <- list.files(folder, pattern = "\\.jpg$", full.names = TRUE)
-
-# Then we load each file as a raster, rather than a .jpeg. 
-# 'lapply' is a function that loops over each element in a list.
-rasters <- lapply(files, rast)
-
-# Here we check how many images (this should match the number of tiles from Digimap)
-length(rasters)
-
-# We can then check the first raster in the list. As you can see, it's just a single tile, rather than the full view we downloaded. 
-plot(rasters[[1]])
-
-```
-
-### Tell R what CRS to use:
-
-Because we're using the rasters to make a map, we want them to have spatial information attached. 
+Plot it up (this is an example - think about how you could visualise your data, and what you could highlight. What about the gap in observations?)
 
 ```{r}
-# Here we check what (if any) CRS the first raster in the list has:
-crs(rasters[[1]])
-```
-This means the image currently doesn't have a CRS defined. When we downloaded them from Digimap, in the Map Information section you will have seen "Map Projection: British National Grid (EPSG:27700)". Therefore we know what CRS the images are in, and can tell R: 
+# Convert time column
+counts$Time <- as.POSIXct(counts$Time, format = "%H:%M")
 
-```{r}
-# Assign a CRS to all rasters in the list
-rasters <- lapply(rasters, function(x) { 
-  crs(x) <- "EPSG:27700"
-  x
-})
-```
+# Calculate mean
+counts$Mean <- rowMeans(counts[, c("A","B","C","D","E")])
 
-Note that we're not **reprojecting** the rasters, simply telling R which CRS they're in. 
-
-
-### Merging the rasters:
-
-Now we want to merge our rasters into one composite image. We'll use the `mosaic` function in the `terra` package to do this. 
-
-```{r, eval = F}
-# Take all raster tiles in the list and stitch them together into one continuous raster.
-# We could list all the files out 
-merged <- mosaic(
-  rasters[[1]],
-  rasters[[2]],
-  rasters[[3]],
-  rasters[[4]],
-  rasters[[5]],
-  rasters[[6]]
-)
+# Plot
+ggplot(counts, aes(x = Time)) +
+  geom_line(aes(y = A, colour = "A")) +
+  geom_line(aes(y = B, colour = "B")) +
+  geom_line(aes(y = C, colour = "C")) +
+  geom_line(aes(y = D, colour = "D")) +
+  geom_line(aes(y = E, colour = "E")) +
+  geom_line(aes(y = Mean), linetype = "dashed", linewidth = 1) +
+  labs(
+    title = "Blakemere Moss Colony Counts",
+    x = "Time",
+    y = "Count",
+    colour = "Observer"
+  ) +
+  theme_bw()
 ```
 
-Or, if we had an extensive list, rather than writing it out in full, we could use the `do.call` function from base R. This may take a few minutes. 
-
-```{r, eval = T}
-merged <- do.call(mosaic, rasters)
-```
-Merging the images can lead to the CRS information being lost, so we'll tell R again: 
-
-```{r}
-crs(merged) <- "EPSG:27700"
-```
-
-
-Now we have a merged raster. We can plot it and view it in our plot window: 
-
-```{r, eval = T}
-plotRGB(merged)
-```
-
-We don't need all of the above image, so we can crop to our area of interest (which is the lake itself). 
-
-First we'll check the extent of our merged raster, and add some gridlines to guide us in cropping. 
-
-```{r}
-# Check extent
-ext(merged)
-```
-
-```{r}
-# Plot the merged raster with gridlines 
-plotRGB(merged, axes = T)
-grid()
-```
-
-Then using the grid and the extent, we can plot a bounding box onto our map. This code is also useful for adding map overviews. 
-You can edit the extent of the bounding box to create your map area. 
-
-```{r}
-# Specify the extent of the box 
-bb <- ext(354500, 355600, 370500, 371500)
-
-# Overlay our merged raster with the bounding box
-plotRGB(merged)
-rect(
-  xmin(bb), ymin(bb),
-  xmax(bb), ymax(bb),
-  border = "red", lwd = 2
-)
-
-
-```
-
-Now we can crop our merged raster to the extent of the box: 
-```{r}
-merged_crop <- crop(merged, bb)
-
-plotRGB(merged_crop)
-
-```
-
-This gives us a map area that features the lake and then some space to add any extras, such as a map overlay or legend. 
-
-Next, we'll plot our stations onto the map. We're going to use `ggplot2` and `sf` for this. 
-
-```{r}
-# First we'll convert our station locations to an sf object
-stations_sf <- st_as_sf(
-  station_locs,
-  coords = c("Lon", "Lat"),
-  crs = 4326   # latitude/longitude = WGS84
-)
-
-# We'll then make the CRS of these points match that of the image
-stations_sf <- st_transform(stations_sf, crs(merged_crop))
-```
-
-Now we'll plot the raster with the points overlayed: 
-
-(add note about layers)
-
-```{r}
-
-df <- as.data.frame(merged_crop, xy = TRUE)
-
-
-ggplot(df) +
-  geom_raster(aes(x = x, y = y,
-                  fill = rgb(sj5470_rgb_250_04_1, sj5470_rgb_250_04_2, sj5470_rgb_250_04_3, maxColorValue = 255))) +
-  scale_fill_identity() +
-  geom_sf(data = stations_sf, colour = "red", size = 3) +
-  theme_minimal()
-
-```
-
-
-
-
-### Annotate your map
-
-This section is way too heavy rendering so make them pictures and load them seperately 
-
-Maps need context! Add a scale bar and north arrow at a minumum.
-
-We'll use the package `ggspatial` to add these. 
-
-Probably take out the north arrow...
-
-```{r, eval = F}
-install.packages("ggspatial")
-```
-
-```{r, message= F, warning = F}
-library(ggspatial)
-```
-
-
-```{r}
-
-map_arrow <- ggplot(df) +
-  geom_raster(aes(x = x, y = y,
-                  fill = rgb(sj5470_rgb_250_04_1, sj5470_rgb_250_04_2, sj5470_rgb_250_04_3, maxColorValue = 255))) +
-      annotation_scale(location = "bl", width_hint = 0.5) +
-  annotation_north_arrow(location = "bl", which_north = "true", 
-        pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
-        style = north_arrow_fancy_orienteering) +
-  scale_fill_identity() +
-  geom_sf(data = stations_sf, colour = "red", size = 3) +
-  theme_minimal()
-map_arrow
-
-```
-
-
-### Add a map overview using `rnaturalearth`
-
-Spatial context
-
-### Output your map as a high-resolution .png
-
-For use in your report
-
-```{r, eval = F}
-
-```
-
-::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
-# Optional Extras {#optional-extras}
-:::
-
-::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
-## Jazzing up your plots!
-:::
-
-### Adding icons to plots
-
-[rphylopic](https://cran.r-project.org/web/packages/rphylopic/readme/README.html) is an r package which allows users to add silhouettes of organisms to plots generated in base R and ggplot2. The silhouettes are sourced from the [PhyloPic website.](https://www.phylopic.org/)
-
-Here is a useful outline of the code: [How to add a Phylopic icon to your graph in R](https://jacintak.github.io/post/2021-08-01-rphylopic/).
-
-They have some generic gull silhouettes but they're mostly from the genus Larus - they have one [*Chroicocephalus ridibundus!*](https://www.phylopic.org/nodes/57bc51e5-98e0-4a55-8e60-6faf6fc8226b/chroicocephalus-ridibundus-silhouettes)
-
-::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
-## Tips and tricks
-:::
-
-### Loading multiple packages to your library
-
-To load multiple libraries in one go, rather than listing them all out, you can use the `lapply()` function in base R.
-
-```{r, eval = F}
-# Define a vector of packages to load
-some_packages <- c('ggplot2', 'dplyr', 'ggpubr')
-
-# Use lapply to load all packages to your library at once
-lapply(some_packages, library, character.only=TRUE)
-
-```
-
-::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
-# Practical end. Well done!
-:::
