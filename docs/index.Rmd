@@ -194,6 +194,8 @@ Using pipes: In the code above, we chain together multiple commands with the pip
 
 ## Observer Bias: Cohen's Kappa
 
+In the field last week you collected data that can be used to test for inter-rater reliability. This exercise tests the reliability of the ethogram you have built, and makes sure that all observers are following the same definition of each behaviour. That way, no unnecessary bias is introduced by human error.  Last week, each dyad in your group watched the same individual for a set period of time. In a perfect world, both pair member's assessment of that individual's behaviour would be identical, but this is rarely the case. The Cohen's Kappa test produces a measure of reliability between two observers between 0- 1. 1 is perfect agreement (i.e. both observers had exactly the same results) while 0 is total disagreement. Traditionally, a threshold Cohen's Kappa Score of >0.8 is used to indicate an acceptable level of agreement. This is the threshold you are aiming for today. 
+
 -   Need to check **reliability** of data
 
 -   Having multiple observers in the same project introduces bias
