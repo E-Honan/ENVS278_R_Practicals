@@ -42,14 +42,9 @@ We will have two four-hour computer practicals. From these sessions, you will ac
 5.  (add detail on actual analyses)
 6.  Produce a map of the study area and export it for use in your report
 
+## Assessment
 
-ADD REPORT DETAILS
-
-::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
-## How to follow this practical guide
-:::
-
-This webpage will guide you fully through analysing and visualising your own field data, which we collected in groups at Blakemere Moss.
+This block of the module will be assessed via a report...
 
 ::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
 ## R & RStudio
@@ -75,9 +70,6 @@ Check version.
 
 Together, R and RStudio provide a powerful platform for analysing environmental and spatial datasets used in GIS and environmental science.
 
-::: {style="background-color: #89F0AF; padding: 0.01px; border-left: 5px solid #31573B;"}
-## Learning R
-:::
 
 ::: {style="background-color: #FFFF08; padding: 10px; border-left: 5px solid #FFFF08;"}
 **TASK:** Please read the (short) introductory chapter of [R for Data Science](https://r4ds.hadley.nz/) - this should only take 5 - 10 minutes and will provide you with a good foundation for the rest of the practical.
@@ -91,18 +83,24 @@ Specifically for spatial data, I also have a webpage where I collate useful reso
 
 # PRACTICAL SESSION 1
 
-------------------------------------------------------------------------
+In today's session, we have 4 tasks to complete: 
 
-::: {style="background-color: #64B080; padding: 0.2px; border-left: 5px solid #31573B;"}
-# Formatting your data from the field
-:::
-
-For the first section of today's practical, you will be formatting your data from the field. On the Canvas, you will find templates for each of your groups to input your data. 
-
+1.  Collate and format our data from the field, including our focal watches and count data (group)
+2.  Set up our R project (individual)
+3.  Test each dyad in our group using Cohen's Kappa analysis (group)
+4.  Make our first visualisations of our count data (individual)
 
 ------------------------------------------------------------------------
 
-# Setting up your workspace
+# Task 1: Formatting your data from the field
+
+
+For the first section of today's practical, you will be formatting your data from the field. On the Canvas, you will find templates for each of your groups to input your data.
+
+------------------------------------------------------------------------
+
+# Task 2: Setting up your workspace
+
 
 ## The RStudio environment
 
@@ -110,25 +108,44 @@ Picture of labelled console etc
 
 ## Working with projects in R
 
+In this practical,we're going to be using R projects. Using R Projects helps keep your work organised, reproducible, and easy to manage. By working within a project, all your scripts, data, and outputs live in one self-contained folder, so you don’t have to worry about file paths breaking when you move between computers or share your work. R Projects also make it easier to integrate with version control tools like Git, helping you track changes and collaborate with others. In general, they encourage a clean workflow where analyses are easier to understand and rerun!
+
+How to set up a new R project: 
+
 -   File \> New Project…
 -   Select ‘New Directory’
 -   For the Project Type select ‘New Project’
 -   For Directory name, call it something like “ENVS278_Gull_Practicals” (without the quotes!)
--   For the sub-directory, select somewhere you will remember (like “My Documents” or “Desktop”)
+-   For the sub-directory, select somewhere you will remember (like “My Documents” or “Desktop”). **If you save it to your M drive, you will only be able to access it when using a VPN or university computer.**
 
-## Data hygiene
+Within your R project folder, create the following hierarchical file structure: 
 
-Hierarchical file systems
+```
+project/
+├── scripts/
+├── plots/
+└── data/
+    ├── counts/
+    └── watches/
+```
+Your project folder should look something like this (with your chosen name):
+
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("photos/example_file_structure.png")
+```
+
 
 ## Opening your first R script
 
-An R script is a plain text file that contains a series of R commands you can run. An R script is saved with the extension '.R'.
+-  An R script is a plain text file that contains a series of R commands you can run. 
+-  An R script is saved with the extension '.R'.
 
-To create a new script.
+To create a new script, go to File \> New file \> R Script.
 
-Press save, and give the script a sensible title, like "ENVS278_Gulls_Prac_1". Save it to the 'code' folder in your R project folder.
+-  Press save, and give the script a sensible title, like "ENVS278_Gulls_Prac_1". Save it to the 'scripts' folder in your R project folder.
+-  Add a title to your script with a brief description of what it contains. Use hashtags to tell R that the title is **not** code.
 
-Add a title to your script with a brief description of what it contains. Use hashtags to tell R that the title is **not** code.
+Throughout these practicals, we're going to be emphasising the importance of **annotating** our code as we go.  
 
 ```{r}
 # You can use hashtags to tell R that a line is not a piece of code, and use them to add notes to your R script
@@ -170,7 +187,7 @@ You load the installed R packages to your library using the syntax: `library(pac
 library(tidyverse)
 ```
 
-The syntax for loading multiple libraries is not the same as installing multiple packages. If you're comfortable with R, and would like to try loading multiple libraries at once, the code for this is in the [Optional Extras](#optional-extras) section at the end of this webpage.
+The syntax for loading multiple libraries is not the same as installing multiple packages. If you're comfortable with R, and would like to try loading multiple libraries at once, the code for this is in the [Optional Extras](#optional-extras) section in next week's practical.
 
 If you're getting started with R, the simplest way to load multiple packages is just to manually list them:
 
@@ -184,51 +201,43 @@ library(cowplot)
 **NOTE:** You should only need to install a package once, but you will have to add it to the library for each R session.
 :::
 
-## Viewing your data
+So your first properly annotated R script might look like this: 
 
-Using pipes: In the code above, we chain together multiple commands with the pipe operator (%\>%). When you see the pipe, you can interpret this as the words “and then”. If we wrote this as pseudocode, it would read:
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("photos/example_script.png")
+```
+
+
 
 ------------------------------------------------------------------------
 
 # Preliminary analyses
 
-## Observer Bias: Cohen's Kappa
+## Task 3: Testing for observer bias using Cohen's Kappa
 
-In the field last week you collected data that can be used to test for inter-rater reliability. This exercise tests the reliability of the ethogram you have built, and makes sure that all observers are following the same definition of each behaviour. That way, no unnecessary bias is introduced by human error.  Last week, each dyad in your group watched the same individual for a set period of time. In a perfect world, both pair member's assessment of that individual's behaviour would be identical, but this is rarely the case. The Cohen's Kappa test produces a measure of reliability between two observers between 0- 1. 1 is perfect agreement (i.e. both observers had exactly the same results) while 0 is total disagreement. Traditionally, a threshold Cohen's Kappa Score of >0.8 is used to indicate an acceptable level of agreement. This is the threshold you are aiming for today. 
+In the field last week you collected data that can be used to test for inter-rater reliability. This exercise tests the reliability of the ethogram you have built, and makes sure that all observers are following the same definition of each behaviour. That way, no unnecessary bias is introduced by human error.
 
--   Need to check **reliability** of data
+Last week, each dyad in your group watched the same individual for a set period of time. In a perfect world, both pair member's assessment of that individual's behaviour would be identical, but this is rarely the case. The Cohen's Kappa test produces a measure of reliability between two observers between 0- 1. 1 is perfect agreement (i.e. both observers had exactly the same results) while 0 is total disagreement.
 
--   Having multiple observers in the same project introduces bias
-
--   This can be reduced by testing inter-rater reliability
-
--   To make sure everyone is on the same page
-
--   Cohen’s kappa test
-
--   Tests consensus against disagreement…
-
--   Produces a number between 0-1
-
--   0.8 is generally considered an acceptable score
+Traditionally, a threshold Cohen's Kappa Score of \> 0.8 is used to indicate an acceptable level of agreement. This is the threshold you are aiming for today! On the canvas page, you will find an example Cohen's kappa dataset. As a group, format this for each dyad.
 
 Before moving onto the next session, make sure all the dyads within your data collection group have achieved a Cohen's kappa coefficient of \>0.8
 
-Load the package for calculating Cohen's kappa: 
+Load the package for calculating Cohen's kappa:
 
 ```{r, eval = F, warning = F, message = F}
 # install package
 install.packages("psych")
 ```
 
-Open it in your library: 
+Open it in your library:
 
 ```{r, eval = T, warning = F, message = F}
 # load package
 library(psych)
 ```
 
-Then load in your data set for comparison: 
+Then load in your data set for comparison:
 
 ```{r}
 # open the csv file with your own data (you will need to modify the name of the csv file below)
@@ -242,17 +251,13 @@ cohen.kappa(Kappa_data) # in the output you are interested in the unweighted kap
 
 ```
 
-Is the score > 0.8?
+Is the score \> 0.8?
 
-Repeat this for every dyad in your group. 
-
+Repeat this for every dyad in your group.
 
 ------------------------------------------------------------------------
 
 # Data visualisation in R
-
-> [!IMPORTANT]\
-> Keep it accesibile.
 
 `ggplot2` is the best package for plotting data in R, offering a plethora of options for customization. There are many tutorials out there, but I've found the best way of thinking of any ggplot plot is the 'layer cake' analogy:
 
@@ -260,16 +265,15 @@ Repeat this for every dyad in your group.
 install.packages("ggplot2")
 ```
 
-
 ```{r, eval = T, warning = F, message = F}
 library(ggplot2)
 ```
 
-## Visualing count data
+## Task 4: Visualising count data
 
 The last task in today's practical is to visualise your count data. There are many ways to visualise data through time, and here I've demonstrated one.
 
-Load in your count data: 
+Load in your count data:
 
 ```{r}
 counts <- read.csv("count_data/count_summary.csv")
@@ -277,7 +281,7 @@ counts <- read.csv("count_data/count_summary.csv")
 
 Plot it up (this is an example - think about how you could visualise your data, and what you could highlight. What about the gap in observations?)
 
-```{r}
+```{r, warning = F}
 # Convert time column
 counts$Time <- as.POSIXct(counts$Time, format = "%H:%M")
 
@@ -301,3 +305,8 @@ ggplot(counts, aes(x = Time)) +
   theme_bw()
 ```
 
+Next week, we'll examine the time budgets of the gulls relating to the behaviours we observed, and make a map of the study site using R. We'll also go into to the report in more depth. Now enjoy the sun!
+
+------------------------------------------------------------------------
+
+### End of practical 1
