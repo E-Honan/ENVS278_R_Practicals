@@ -1,0 +1,2 @@
+﻿Group,Locality,Count,Start_time,Period,Bird,SU,SUW,SW,P,SD,RW,FL,TO,FO,SUF,Out of Sight,Sum,perc_SU,perc_SUW,perc_SW,perc_P,perc_SD,perc_RW,perc_FL,perc_TO,perc_FO,perc_SUF
+Water Rails,Loc_5,1,(watch start time),(am or pm),Bird_1,30,10,50,30,30,30,30,30,30,30,0,300,10,3.333333333,16.66666667,10,10,10,10,10,10,10

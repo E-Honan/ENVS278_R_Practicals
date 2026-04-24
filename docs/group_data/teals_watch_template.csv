@@ -1,0 +1,2 @@
+﻿Group,Locality,Count,Start_time,Period,Bird,Swimming,Preening,Vocalising,Sleeping,Flying,Standing,Foraging,Socialising ,Out of Sight,SUM,perc_Swimming,perc_Preening,perc_Vocalising,perc_Sleeping,perc_Flying,perc_Standing,perc_Foraging,perc_Socialising ,
+Teals,Loc_4,1,(watch start time),(am or pm),Bird_1,45,165,0,0,0,60,30,0,0,300,15,55,0,0,0,20,10,0,

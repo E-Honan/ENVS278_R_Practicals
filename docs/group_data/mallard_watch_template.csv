@@ -1,0 +1,2 @@
+﻿Group,Locality,Watch,Start_time,Period,Bird,Foraging,Out of Site,Preening,Resting,Swimming,Vocalising,Breeding,Flying,Out of Site,Sum,perc_Foraging,perc_OOS,perc_Preening,perc_Resting,perc_Swimming,perc_Vocalising,perc_Breeding,perc_Flying
+Mallard,Loc_6,1,(watch start time),(am or pm),Bird_1,30,15,15,30,150,60,0,0,0,300,10,5,5,10,50,20,0,0
